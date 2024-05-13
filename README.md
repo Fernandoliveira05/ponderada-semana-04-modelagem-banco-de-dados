@@ -106,7 +106,7 @@
     * **gift (Binary)**: O cachorro foi um presente.
     * **chose_me**: O cachorro me escolheu.
 
-* Tabela **Had Dogs or Lived With**(<code>had_dogs_or_lived_with</code>): Armazena infomrações sobre usuários que viveram ou tiveram cachorros.
+* Tabela **Had Dogs or Lived With**(<code>had_dogs_or_lived_with</code>): Armazena informações sobre usuários que viveram ou tiveram cachorros.
      * **id (Serial)**: Identificador único do registro de quem já possuiu cachorros ou conviveu com. (<code>Primary Key</code>)
      * **id_users (Integer)**: Identificador único de usuário, chave primária da tabela <code>users</code>. (<code>Foreign Key</code>)
      * **dog_description (MediumText)**: Descrição do cachorro. (<code>Foreign Key</code>)
@@ -116,13 +116,85 @@
     * **pets_count (Integer)**: Quantos cachorros o usuário possui.
     * **dog_arrived_age (Varchar (20))**: Idade que o cachorro chegou. 
     * **neutered** **(Binary)**: Confirma se o cachorro era castrado.
+    * **age_neutered** **(Varchar (50))**: Idade em que o cachorro foi castrado, caso tenha sido.
     * **dog_breed** **(Varchar (50))**: Qual era a raça do cachorro.
-    * **neutered** **(Binary)**: Confirma se o cachorro é castrado.
-     
+    * **dog_origin** **(Varchar (60))**: Origem do cachorro.
+    * **dog_price** **(Varchar (20))**: Preço do cachorro, caso tenha sido comprado.
+    * **first_impression_of_dog** **(MediumText)**: Primeira impressão do cachorro.
+    * **most_like** **(MediumText)**: O que mais gostava no cachorro.
+    * **dislike** **(MediumText)**: O que não gostava no cachorro.
+    * **go_to_vet** **(Binary)**: O cachorro visitava o veterinário ou não. 
+    * **vet_frequency** **(Varchar (60))**: Frequência que o cachorro ia ao veterinário. 
+    * **last_contact** **(Varchar (60))**: Último contato com o cachorro.
+    * **dog_age_in_last_contact** **(Varchar (30))**: Idade do cachorro no último contato.
+    * **reason_of_last_contact** **(Varchar (200))**: Razão do último contato com o cachorro.
+    * **would_have_new_dog** **(Binary)**: Teria um novo cachorro ou não.
+    * **reason** **(Varchar (20))**: Razão da resposta ao <code>would_have_new_dog</code>.
+    * **id_dog_reason** **(Integer)**: Chave estrangeira vinculada ao ID da razão pra se ter o cachorro. (<code>Foreign Key</code>)
 
+* Tabela **Don´t Have But Want** (<code>dont_have_but_want</code>): Armazena infomrações sobre usuários que viveram ou tiveram cachorros.
+    * **id** **(Serial)**: Identificador único para cada registro de usuário que não tem, porém deseja ter um cachorro.
+    * **id_users (Integer)**: Identificador único de usuário, chave primária da tabela <code>users</code>. (<code>Foreign Key</code>)
+    * **dog_size** **(Varchar (10))**: Tamanho do cachorro desejado. 
+    * **dog_coat** **(Varchar (10))**: Pelagem do cachorro desejado.
+    * **dog_breed** **(Varchar (10))**: Raça do cachorro desejado.
+    * **dog_gender** **(Varchar (10))**: Sexo do cachorro desejado.
+    * **though_dog_name** **(Varchar (10))**: O nome do cachorro já foi pensado ou não.
+    * **dog_name** **(Varchar (50))**: Caso a resposta anterior tenha sido afirmativa, qual o nome pretendido. 
+    * **prefer_adopt_or_buy** **(Varchar (10))**: A preferência é pela adoção ou compra do cachorro.
+    * **when_will_receive_the_dog** **(Varchar (10))**: Quando vai receber o cachorro.
+    * **personality_expectations** **(MediumText)**: O que espera da personalidade do cachorro.
+    * **know_about_costs** **(Binary)**: Sabe os custos de se ter um cachorro.
+    * **id_dog_reason** **(Integer)**: Chave estrangeira vinculada ao ID da razão pra se ter o cachorro. (<code>Foreign Key</code>)
+    
+* Tabela **Don´t Lived and Don´t Want** (<code>dont_lived_and_dont_want</code>): Armazena informações dos usuários que não tiveram e não desejam ter cachorro.
+    * **id (Serial)**: Identificador único de usuário que nunca teve e não deseja ter um cachorro <code>users</code>. (<code>Primary Key</code>)
+    * **id_users (Integer)**: Identificador único de usuário, chave primária da tabela <code>users</code>. (<code>Foreign Key</code>)
+    * **why_dont_want (MediumText)**: Razão pra não querer ter cachorros.
 
+    # 3.2 Relacionamentos entre Tabelas
+        
+    &nbsp;&nbsp;&nbsp;&nbsp; O nosso modelo físico estabeleceu algumas relacionamento entre entidades, portanto, vamos entendê-las:
 
+    
+    ### 3.2.1 users e have_dogs 
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>users</code>, <code>have_dogs</code> é de um para muitos **(1:N)**, afinal, cada usuário (<code>users</code>) pode possuir apenas diversos cachorros, porém, cada cachorro pode ter apenas um usuário.
+    </br>
+    </br>
+    ### 3.2.2 dog_reason e have_dogs
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>dog_reason</code>, <code>have_dogs</code> é uma relação de muitos para muitos **(N:N)**. Cada cachorro pode ter diversas razões para estar presente na vida do usuário. Do mesmo jeito que cada razão pode ser vinculada a diversos cachorros. 
+    </br>
+    </br>
+    ### 3.2.3 had_dogs_or_lived_with e users
+    &nbsp;&nbsp;&nbsp;&nbsp; <code>had_dogs_or_lived_with</code> e <code>users</code> é uma relação de um para muitos **(1:N)**, afinal, cada usuário pode ter diversos cachorros, tendo também diversos registros para eles. Porém, cada cachorro só pode estar vinculado a um usuário. 
 
+    ### 3.2.4 had_dogs_or_lived_with e dog_reason
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>had_dogs_or_lived_with</code> e <code>dog_reason</code> é de muitos para muitos (N:N), afinal, cada cachorro pode ter tido diversas razões para ter sido adotado/comprado. Cada razão, por sua vez, pode ser associada a vários cachorros.
+    </br>
+    </br>
+    ### 3.2.5 dont_have_but_want e users
+    &nbsp;&nbsp;&nbsp;&nbsp; <code>dont_have_but_want</code> e <code>users</code> é uma relação de um para muitos **(1:N)**, afinal, cada usuário pode ter diversos gostos para cachorros, tendo também diversos registros para eles. Porém, cada registro só pode estar vinculado a um usuário. 
+    
+    ### 3.2.6 dont_have_but_want e dog_reason
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>dont_have_but_want</code> e <code>dog_reason</code> é de muitos para muitos (N:N), afinal, cada usuário pode ter diversas razões para se ter um cachorro. Cada razão pode ser preenchida por diversos usuários. 
+    </br>
+    </br>
+     ### 3.2.7 dont_lived_and_dont_want e users
+    &nbsp;&nbsp;&nbsp;&nbsp;<code>dont_lived_and_dont_want</code> e <code>users</code> é de um para muitos (1:N), afinal, cada usuário pode escolher várias razões para não querer um cachorro. Cada novo registro na tabela pertence a um usuário.
+    </br>
+    </br>
 
+# 4. Regras de Negócio
+ &nbsp;&nbsp;&nbsp;&nbsp; As necessidades da nossa aplicação podem ser traduzidas em regras lógicas. Essas lógicas serão regras aplicadas aos bancos de dados. 
 
+  * Um usuário deverá ter apenas um registro na tabela <code>users</code>.
+  * A senha do usuário deverá ser armazenada criptografada.
+  * E-mails não podem ter mais que um registro.
+  * Informações já salvas não podem ser editadas, apenas em casos específicos. 
+  * Campos de dados do tipo Integer devem ser apenas números positivos, jamais negativos.
+</br>
+</br>
+
+# 5. Considerações Finais
+ &nbsp;&nbsp;&nbsp;&nbsp; O modelo relacional garante a integridade dos dados coletados em nossos formulários. Dessa maneira, asseguramos que não haverão divergências em nosso banco de dados, garantindo assim a confiabilidade dos dados armazenados pelo nosso site. Com base nesse modelo, teremos uma gestão eficaz por bastante tempo. 
 
