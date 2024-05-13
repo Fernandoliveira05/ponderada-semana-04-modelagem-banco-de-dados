@@ -1,4 +1,4 @@
-# Atividade ponderada emana 03 - Modelagem do Banco de Dados 
+# Atividade ponderada semana 03 - Modelagem do Banco de Dados 
 
 *  **Projeto:** Abandono Zero
 * **Data:** 2024-05-10
